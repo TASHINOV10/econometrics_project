@@ -1,0 +1,39 @@
+ Loan.Sanction.Amount..USD.    Gender               Age       
+ Min.   :  4023             Length:21161       Min.   :18.00  
+ 1st Qu.: 30333             Class :character   1st Qu.:25.00  
+ Median : 55178             Mode  :character   Median :40.00  
+ Mean   : 65889                                Mean   :40.39  
+ 3rd Qu.: 89124                                3rd Qu.:56.00  
+ Max.   :481907                                Max.   :65.00  
+                                                              
+  Income..USD.       Income.Stability     Location        
+ Min.   :    378.8   Length:21161       Length:21161      
+ 1st Qu.:   1656.5   Class :character   Class :character  
+ Median :   2250.4   Mode  :character   Mode  :character  
+ Mean   :   2693.5                                        
+ 3rd Qu.:   3128.9                                        
+ Max.   :1777460.2                                        
+ NA's   :3797                                             
+ Loan.Amount.Request..USD. Current.Loan.Expenses..USD.   Dependents    
+ Min.   :  6108            Min.   :-999.0              Min.   : 1.000  
+ 1st Qu.: 42084            1st Qu.: 251.0              1st Qu.: 2.000  
+ Median : 77307            Median : 380.6              Median : 2.000  
+ Mean   : 91517            Mean   : 406.4              Mean   : 2.252  
+ 3rd Qu.:123928            3rd Qu.: 529.5              3rd Qu.: 3.000  
+ Max.   :602384            Max.   :3840.9              Max.   :10.000  
+                           NA's   :143                 NA's   :2044    
+  Credit.Score   No..of.Defaults  Has.Active.Credit.Card
+ Min.   :620.1   Min.   :0.0000   Length:21161          
+ 1st Qu.:705.1   1st Qu.:0.0000   Class :character      
+ Median :756.5   Median :0.0000   Mode  :character      
+ Mean   :758.1   Mean   :0.1936                         
+ 3rd Qu.:809.8   3rd Qu.:0.0000                         
+ Max.   :896.3   Max.   :1.0000                         
+ NA's   :1388                                           
+  Co.Applicant     
+ Min.   :-999.000  
+ 1st Qu.:   1.000  
+ Median :   1.000  
+ Mean   :  -5.051  
+ 3rd Qu.:   1.000  
+ Max.   :   1.000  

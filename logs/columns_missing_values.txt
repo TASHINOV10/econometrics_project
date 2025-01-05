@@ -1,0 +1,14 @@
+ Loan.Sanction.Amount..USD.                      Gender 
+                          0                          37 
+                        Age                Income..USD. 
+                          0                        3797 
+           Income.Stability                    Location 
+                       1413                           0 
+  Loan.Amount.Request..USD. Current.Loan.Expenses..USD. 
+                          0                         143 
+                 Dependents                Credit.Score 
+                       2044                        1388 
+            No..of.Defaults      Has.Active.Credit.Card 
+                          0                        1104 
+               Co.Applicant 
+                          0 

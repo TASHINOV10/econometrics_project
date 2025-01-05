@@ -1,0 +1,10 @@
+# Ignore parent directories 
+../Econometrics/ 
+../Macro2/ 
+../archive/ 
+../desktop.ini 
+../others/ 
+../tashi_trees/ 
+../~$*.docx 
+*.docx 
+*.ini 
