@@ -8,3 +8,5 @@
 ../~$*.docx 
 *.docx 
 *.ini 
+*.Rproj.user
+
