@@ -1,0 +1,9 @@
+# Progress Log 
+
+# Project has been set up
+# Exploratory logs have been saved
+# # There are 13 variables, 6 continuous, 7 categorical, There are NA values in all of them
+# NA replacement
+# # Dependents - replaced NA with 0
+# # Current.Loan.Expenses..USD - Has NA values. There seem to be no 0s but rather -999s. I will assume that this is a sign that the particular customer has no loan expenses
+# # Analyzing Variable means. Have to research if I can use it to fill in the blanks

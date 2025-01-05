@@ -23,10 +23,6 @@ $unique_values
 [1] 0 1
 
 
-Econometrics project. Making a regression analysis on loan data using R.
-
-
-
 Column: Has.Active.Credit.Card 
 $unique_values
 [1] NA            "Unpossessed" "Active"      "Inactive"   
