@@ -2,8 +2,39 @@
 
 # Project has been set up
 # Exploratory logs have been saved
-# # There are 13 variables, 6 continuous, 7 categorical, There are NA values in all of them
+-There are 13 variables, 6 continuous, 7 categorical, There are NA values in all of them
+
 # NA replacement
-# # Dependents - replaced NA with 0
-# # Current.Loan.Expenses..USD - Has NA values. There seem to be no 0s but rather -999s. I will assume that this is a sign that the particular customer has no loan expenses
-# # Analyzing Variable means. Have to research if I can use it to fill in the blanks
+
+## Dependents 
+- replaced NA with 0
+
+## Current.Loan.Expenses..USD 
+- Has NA values. There seem to be no 0s but rather -999s. I will assume that this is a sign that the particular customer has no loan expenses
+
+## Active.Credit.Card
+-Examined what is the distribution of Loan Sanction Amount 
+given different values of Active.Credit.Card var
+-The Loan.Sanction.Amount..USD. for NA rows differs significantly in its mean and quartile ranges compared to the other categories (Unpossessed, Active, Inactive).
+-This suggests that rows with NA might belong to a unique group with specific characteristics.
+- Replaced NAs with "Unknown"
+
+# Analyzing Variable means. Have to research if I can use it to fill in the blanks
+# A better method would be to use Multiple Imputation Technique
+
+##Income.Stability
+- Mean Values do not differ significantly with the different values of Income.Stability
+-Removing NAs
+
+##Gender
+-Due to the small number of NA observations (35) together with the 
+lack of significant differences between the means, NAs will be deleted.
+
+#Remaining Variables
+- Income..USD. 
+- Credit.Score 
+- Current.Loan.Expenses..USD
+
+-All NAs were removed
+
+

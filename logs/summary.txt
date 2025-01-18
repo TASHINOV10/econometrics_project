@@ -5,6 +5,7 @@
  Mean   : 65889                                Mean   :40.39  
  3rd Qu.: 89124                                3rd Qu.:56.00  
  Max.   :481907                                Max.   :65.00  
+
                                                               
   Income..USD.       Income.Stability     Location        
  Min.   :    378.8   Length:21161       Length:21161      
@@ -13,7 +14,9 @@
  Mean   :   2693.5                                        
  3rd Qu.:   3128.9                                        
  Max.   :1777460.2                                        
- NA's   :3797                                             
+ NA's   :3797                              
+ 
+              
  Loan.Amount.Request..USD. Current.Loan.Expenses..USD.   Dependents    
  Min.   :  6108            Min.   :-999.0              Min.   : 1.000  
  1st Qu.: 42084            1st Qu.: 251.0              1st Qu.: 2.000  
@@ -22,6 +25,8 @@
  3rd Qu.:123928            3rd Qu.: 529.5              3rd Qu.: 3.000  
  Max.   :602384            Max.   :3840.9              Max.   :10.000  
                            NA's   :143                 NA's   :2044    
+
+
   Credit.Score   No..of.Defaults  Has.Active.Credit.Card
  Min.   :620.1   Min.   :0.0000   Length:21161          
  1st Qu.:705.1   1st Qu.:0.0000   Class :character      
@@ -29,7 +34,9 @@
  Mean   :758.1   Mean   :0.1936                         
  3rd Qu.:809.8   3rd Qu.:0.0000                         
  Max.   :896.3   Max.   :1.0000                         
- NA's   :1388                                           
+ NA's   :1388 
+
+                                   
   Co.Applicant     
  Min.   :-999.000  
  1st Qu.:   1.000  
@@ -37,3 +44,26 @@
  Mean   :  -5.051  
  3rd Qu.:   1.000  
  Max.   :   1.000  
+
+
+-------------------------------------------------------------
+
+
+                            NA_Percentage
+
+Loan.Sanction.Amount..USD.      0.0000000
+Gender                          0.1748500
+Age                             0.0000000
+Income..USD.                   17.9433864
+Income.Stability                6.6773782
+Location                        0.0000000
+Loan.Amount.Request..USD.       0.0000000
+Current.Loan.Expenses..USD.     0.6757715
+Dependents                      9.6592789
+Credit.Score                    6.5592363
+No..of.Defaults                 0.0000000
+Has.Active.Credit.Card          5.2171447
+Co.Applicant                    0.0000000
+
+-------------------------------------------------------------
+

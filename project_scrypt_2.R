@@ -1,4 +1,5 @@
 # ==== Exploratory Data Analysis ==
+
 # I. Data Review
 #===========================================================
 
@@ -16,6 +17,38 @@ colSums(is.na(loan_data))
 # Duplicates
 duplicates <- loan_data[duplicated(loan_data), ]
 print(duplicates)
+
+#NA Values
+count_total <- nrow(loan_data)
+print(count_total)
+count_na <- sum(is.na(loan_data))
+print(count_na)
+pct_na <- count_na / count_total
+print(pct_na)
+
+#Na Values per columns 
+na_percentage <- colSums(is.na(loan_data)) / nrow(loan_data) * 100
+
+na_summary <- data.frame(
+  Column = names(na_percentage),
+  NA_Percentage = na_percentage
+)
+
+print(na_summary)
+
+#Filter by Credit.Score NA
+filtered_df <- loan_data[is.na(loan_data$Credit.Score), ]
+View(filtered_df)
+na_percentage <- sum(is.na(filtered_df$Income.Stability)) / nrow(filtered_df) * 100
+
+# Print the percentage
+cat("Percentage of NA in Income.Stability:", na_percentage, "%\n")
+
+#Income stability Range
+summary(loan_data[loan_data$Income.Stability == "Low", "Income..USD."])
+summary(loan_data[loan_data$Income.Stability == "High", "Income..USD."])
+        
+
 
 #------------------------------------------------------------------------
 # Count columns with continuous variables
@@ -58,6 +91,7 @@ print(continuous_columns_labels)
 loan_data$Dependents[is.na(loan_data$Dependents)] <- 0
 unique_dependents <- unique(loan_data$Dependents)
 print(unique_dependents)
+
 # No 0 values are present in the original data set for this column
 # I assume that this stands for lack of dependents
 # Replaced NA with 0s
@@ -71,10 +105,30 @@ loan_data$Current.Loan.Expenses..USD[(loan_data$Current.Loan.Expenses..USD) == -
 unique_dependents <- unique(loan_data$Current.Loan.Expenses..USD)
 summary(loan_data$Current.Loan.Expenses..USD)
 
+loan_data <- loan_data[!is.na(loan_data$Current.Loan.Expenses..USD), ]
 # There seems to be no records with value 0 but rather -999.
 # I will replace this value with 0, assuming that it stands for no expenses.
 
+# # Income..USD
+loan_data <- loan_data[!is.na(loan_data$Income..USD.), ]
 
+# # Active.Credit.Card
+
+#What is the distribution of Loan Sanction Amount 
+#given different values of Active.Credit.Card var
+
+summary(loan_data[loan_data$Has.Active.Credit.Card == "Unpossessed", "Loan.Sanction.Amount..USD."])
+summary(loan_data[loan_data$Has.Active.Credit.Card == "Active", "Loan.Sanction.Amount..USD."])
+summary(loan_data[loan_data$Has.Active.Credit.Card == "Inactive", "Loan.Sanction.Amount..USD."])
+summary(loan_data[is.na(loan_data$Has.Active.Credit.Card), "Loan.Sanction.Amount..USD."])
+loan_data$Has.Active.Credit.Card[is.na(loan_data$Has.Active.Credit.Card)] <- "Unknown"
+table(loan_data$Has.Active.Credit.Card)
+
+
+# # Co.Applicant 
+table(loan_data$Co.Applicant)
+filtered_df <- loan_data[loan_data$Co.Applicant %in% c(-999, 0), ]
+View(filtered_df)
 # =====================================
 # Creating Age classification bin
 # Might be helpful to fill in the missing values for the continuous vars based on the distribution per age class
@@ -135,3 +189,25 @@ ggplot(loan_data_2, aes(x = Age_Bins, y = `Income..USD.`)) +
   theme_minimal()
 
 
+  #----------------------------
+  library(ggplot2)
+  library(reshape2)
+  # Filter numeric columns in filtered_df
+  numeric_columns <- sapply(filtered_df, is.numeric)
+  numeric_data <- filtered_df[, numeric_columns]
+  
+  # Calculate the correlation matrix
+  cor_matrix <- cor(numeric_data, use = "complete.obs")
+  
+  # Melt the correlation matrix for ggplot2
+  cor_melt <- melt(cor_matrix)
+  
+  # Plot the heatmap
+  ggplot(data = cor_melt, aes(x = Var1, y = Var2, fill = value)) +
+    geom_tile(color = "white") +
+    scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1, 1), space = "Lab", name = "Correlation") +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+    labs(title = "Heatmap of Correlation", x = "Variables", y = "Variables")
+  
+  
