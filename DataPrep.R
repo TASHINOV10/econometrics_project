@@ -90,11 +90,11 @@ loan_data$Dependents[is.na(loan_data$Dependents)] <- 0
 unique_dependents <- unique(loan_data$Dependents)
 print(unique_dependents)
 
-'''
-No 0 values are present in the original data set for this column
-I assume that this stands for lack of dependents
-Replaced N/A with 0s
-'''
+
+#No 0 values are present in the original data set for this column
+#I assume that this stands for lack of dependents
+#Replaced N/A with 0s
+
 # # Current.Loan.Expenses..USD.------------------------------------------------------  
 
 count_zero_records <- sum(loan_data$Current.Loan.Expenses..USD. == 0, na.rm = TRUE)
@@ -106,28 +106,28 @@ summary(loan_data$Current.Loan.Expenses..USD.)
 
 #loan_data <- loan_data[!is.na(loan_data$Current.Loan.Expenses..USD), ]
 
-'''
-There seems to be no records with value 0 but rather -999.
-I will replace these value with 0, assuming that it stands for no expenses.
-'''
+
+#There seems to be no records with value 0 but rather -999.
+#I will replace these value with 0, assuming that it stands for no expenses.
+
 
 # # Active.Credit.Card------------------------------------------------------  
 
-'''
-Checking what is the distribution of Loan Sanction Amount 
-given different values of Active.Credit.Card var
-'''
+
+#Checking what is the distribution of Loan Sanction Amount 
+#given different values of Active.Credit.Card var
+
 
 summary(loan_data[loan_data$Has.Active.Credit.Card == "Unpossessed", "Loan.Sanction.Amount..USD."])
 summary(loan_data[loan_data$Has.Active.Credit.Card == "Active", "Loan.Sanction.Amount..USD."])
 summary(loan_data[loan_data$Has.Active.Credit.Card == "Inactive", "Loan.Sanction.Amount..USD."])
 summary(loan_data[is.na(loan_data$Has.Active.Credit.Card), "Loan.Sanction.Amount..USD."])
 
-'''
-The Loan.Sanction.Amount..USD. for NA rows differs significantly in its mean and quartile ranges compared to the other categories (Unpossessed, Active, Inactive).
-This suggests that rows with NA might belong to a unique group with specific characteristics.
-Replacing NAs with "unknown"
-'''
+
+#The Loan.Sanction.Amount..USD. for NA rows differs significantly in its mean and quartile ranges compared to the other categories (Unpossessed, Active, Inactive).
+#This suggests that rows with NA might belong to a unique group with specific characteristics.
+#Replacing NAs with "unknown"
+
 loan_data$Has.Active.Credit.Card[is.na(loan_data$Has.Active.Credit.Card)] <- "Unknown"
 
 # # Income.Stability------------------------------------------------------  
@@ -136,10 +136,10 @@ summary(loan_data[loan_data$Income.Stability  == "Low", "Loan.Sanction.Amount..U
 summary(loan_data[loan_data$Income.Stability  == "High", "Loan.Sanction.Amount..USD."])
 summary(loan_data[is.na(loan_data$Income.Stability ), "Loan.Sanction.Amount..USD."])
 
-'''
-Mean Values do not differ significantly
-Removing the NA values
-'''
+
+#Mean Values do not differ significantly
+#Removing the NA values
+
 loan_data <- loan_data[!is.na(loan_data$Income.Stability), ]
 
 # # Gender------------------------------------------------------  
@@ -147,10 +147,10 @@ summary(loan_data[loan_data$Gender  == "M", "Loan.Sanction.Amount..USD."])
 summary(loan_data[loan_data$Gender  == "F", "Loan.Sanction.Amount..USD."])
 summary(loan_data[is.na(loan_data$Gender ), "Loan.Sanction.Amount..USD."])
 
-'''
-Due to the small number of NA observations (35) together with the 
-lack of significant differences between the means, NAs will be deleted.
-'''
+
+#Due to the small number of NA observations (35) together with the 
+#lack of significant differences between the means, NAs will be deleted.
+
 
 loan_data <- loan_data[!is.na(loan_data$Gender), ]
 
@@ -188,5 +188,9 @@ loan_data <- loan_data[!is.na(loan_data$Current.Loan.Expenses..USD), ]
 
 #Missing Values Matrix
 md.pattern(loan_data)
+
+# II. Exporting to csv ===========================================================
+
+write.csv2(loan_data, "loan_data_preped.csv", row.names = FALSE)
 
 
