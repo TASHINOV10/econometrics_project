@@ -30,11 +30,21 @@ given different values of Active.Credit.Card var
 -Due to the small number of NA observations (35) together with the 
 lack of significant differences between the means, NAs will be deleted.
 
-#Remaining Variables
-- Income..USD. 
-- Credit.Score 
-- Current.Loan.Expenses..USD
+## Income..USD. 
+-Judging by the histogram it appears that the var is not normally distributed- therefore cannot 
+replace the missing values with the mean
+- correlation shows moderate relationship with dep var
+- removing all NAs together with the extreme values
 
--All NAs were removed
+## Credit.Score 
+-Removed outliers and NAs
+
+##Current.Loan.Expenses..USD
+-Removed outliers and NAs
+
+##Loan.Amount.Request..USD.
+-Removed outliers and NAs
+
+
 
 

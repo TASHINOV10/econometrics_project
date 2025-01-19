@@ -318,7 +318,6 @@ anova_test <- aov(Loan.Sanction.Amount..USD. ~ AgeGroup, data = loan_data_f4)
 summary(anova_test)
 
 
-
 tree <- rpart(Loan.Sanction.Amount..USD. ~ Age, 
               data = loan_data_f4, 
               method = "anova", 
@@ -328,7 +327,6 @@ print(tree)
 
 correlation <- cor(loan_data_f4$AgeGroup, loan_data_f4$Loan.Sanction.Amount..USD., use = "complete.obs")
 cat("Correlation Coefficient:", correlation, "\n")
-
 
 
 
