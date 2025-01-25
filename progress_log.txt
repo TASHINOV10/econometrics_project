@@ -1,10 +1,10 @@
-# Progress Log 
+# Progress Log ===========================================================
 
 # Project has been set up
 # Exploratory logs have been saved
 -There are 13 variables, 6 continuous, 7 categorical, There are NA values in all of them
 
-# NA replacement
+# NA replacement ===========================================================
 
 ## Dependents 
 - replaced NA with 0
@@ -45,6 +45,19 @@ replace the missing values with the mean
 ##Loan.Amount.Request..USD.
 -Removed outliers and NAs
 
+# Data discretization ===========================================================
+##Age bins
+checking for linearity within each bin is not the focus when you use this method. By creating bins, you are essentially assuming a constant effect of age within each bin. The regression coefficients for the dummy variables then represent the difference in the dependent variable between that bin and the reference bin. You've already established the overall non-linearity with your initial scatterplot showing the flat red line. The binning approach is a way to model this non-linearity by allowing different average effects for different age ranges.
 
+The ANOVA test tells you if there is a statistically significant difference in the dependent variable among any of the age groups. The p-values for the individual dummy variables in the regression summary tell you if each specific group is significantly different from the reference group.
+
+Performing a correlation analysis between the bins (categorical variables) and the ratio variables (e.g., Income..USD., Loan.Amount.Request..USD.) is not a meaningful approach because correlation analysis assumes numerical and continuous data. Binned variables like AgeGroup are categorical, so using correlation coefficients (e.g., Pearson correlation) would not yield meaningful results.
+
+##Gender
+...
+
+
+#All variables have been somewhat edited or fitted into the model
+#Key graphs and analysis has been prepared
 
 

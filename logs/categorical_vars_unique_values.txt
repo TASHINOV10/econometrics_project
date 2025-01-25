@@ -1,33 +1,28 @@
-Column: Gender 
+Column: Gender **
 $unique_values
 [1] "F" "M" NA 
 
 
-Column: Income.Stability 
+Column: Income.Stability **
 $unique_values
 [1] "Low"  "High" NA    
 
 
-Column: Location 
+Column: Location **
 $unique_values
 [1] "Semi-Urban" "Rural"      "Urban"     
 
 
-Column: Dependents 
-$unique_values
- [1]  3  1  2 NA  4  5  8  6  7 10
-
-
-Column: No..of.Defaults 
+Column: No..of.Defaults **
 $unique_values
 [1] 0 1
 
 
-Column: Has.Active.Credit.Card 
+Column: Has.Active.Credit.Card **
 $unique_values
 [1] NA            "Unpossessed" "Active"      "Inactive"   
 
 
-Column: Co.Applicant 
+Column: Co.Applicant **
 $unique_values
 [1]    1    0 -999

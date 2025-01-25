@@ -1,6 +1,8 @@
 #Libraries Import
 library(mice) #Used to generate missing values matrix
 library(ggplot2)
+library(reshape2)
+library(dplyr)
 
 # I. Data Review ===========================================================
 
@@ -33,7 +35,7 @@ md.pattern(loan_data)
 
 #Na Values per columns------------------------------------------------------
 #PERC
-na_percentage <- colSums(is.na(loan_data_f4)) / nrow(loan_data_f4) * 100
+na_percentage <- colSums(is.na(loan_data)) / nrow(loan_data) * 100
 
 na_summary <- data.frame(
   Column = names(na_percentage),
@@ -155,7 +157,6 @@ summary(loan_data[is.na(loan_data$Gender ), "Loan.Sanction.Amount..USD."])
 #Due to the small number of NA observations (35) together with the 
 #lack of significant differences between the means, NAs will be deleted.
 
-
 loan_data <- loan_data[!is.na(loan_data$Gender), ]
 
 # # Co.Applicant------------------------------------------------------  
@@ -171,6 +172,7 @@ loan_data <- loan_data[loan_data$Co.Applicant != -999, ]
 
 #Missing Values Matrix-------------------
 md.pattern(loan_data)
+
 
 # III. Extreme Values ===========================================================
 
@@ -253,8 +255,52 @@ ggplot(loan_data_f4, aes(x=1,y=Income..USD.))+
   geom_boxplot()+
   theme_light()
 
+#Linear Relationship------------------
+#Loan.Amount.Request..USD.
+ggplot(data = loan_data_f4, aes(x = Loan.Amount.Request..USD., y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Loan.Amount.Request..USD.",
+       y = "Loan Sanction Amount USD")
+
+#Current.Loan.Expenses..USD.
+ggplot(data = loan_data_f4, aes(x = Current.Loan.Expenses..USD., y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Current.Loan.Expenses..USD.",
+       y = "Loan Sanction Amount USD")
+
+#Credit.Score
+
+ggplot(data = loan_data_f4, aes(x = Credit.Score, y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Credit.Score.",
+       y = "Loan Sanction Amount USD")
+
+#Income..USD.
+
+ggplot(data = loan_data_f4, aes(x = Income..USD., y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Income..USD.",
+       y = "Loan Sanction Amount USD")
+
+#Income..USD.
+
+ggplot(data = loan_data_f4, aes(x = Dependents, y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Dependents",
+       y = "Loan Sanction Amount USD")
+
 #Histograms---------------------------
-#replace loan data version(f1,f2,f3,f4) to alternate between results
+#replace loan data version(f1,f2,f3,f4) to alternate dataset version
 
 ggplot(loan_data_f4, aes(Income..USD.))+
   geom_histogram(bins=20,aes(y=..density..))
@@ -270,18 +316,14 @@ ggplot(loan_data_f4, aes(Loan.Amount.Request..USD.))+
 
 
 # Correlation matrix ==============================================================
-library(reshape2)
-
-# Load necessary libraries
-library(ggplot2)
-library(reshape2)
 
 # Select only the specified numeric variables
 selected_vars <- loan_data_f4[, c("Loan.Sanction.Amount..USD.", 
                                   "Income..USD.", 
                                   "Loan.Amount.Request..USD.", 
                                   "Current.Loan.Expenses..USD.", 
-                                  "Credit.Score")]
+                                  "Credit.Score",
+                                  "Dependents")]
 
 # Compute the correlation matrix
 correlation_matrix <- cor(selected_vars, use = "complete.obs")
@@ -301,32 +343,202 @@ ggplot(data = melted_corr_matrix, aes(x = Var1, y = Var2, fill = value)) +
   labs(title = "Correlation Matrix Heatmap with Labels", x = "", y = "")
 
 
-#--------------------------------------------
+# IV. Model Parametrisation ===========================================================
+
+# Age -----------
+# This variable has no linear relationship with Loan Sanction Amount
+# Creating separate bins to overcome the linearity issue
+
 loan_data_f4$AgeGroup <- cut(loan_data_f4$Age, 
-                          breaks = c(0, 30, 40, 50, 60, 70, Inf), 
-                          labels = c("0-30", "30-40", "40-50", "50-60", "60-70", "70+"),
+                          breaks = c(18, 30, 40, 50, 60, 70, Inf), 
+                          labels = c("18-30", "30-40", "40-50", "50-60", "60-70", "70+"),
                           include.lowest = TRUE)
 
-ggplot(loan_data_f4, aes(x = AgeGroup, y = Loan.Sanction.Amount..USD.)) +
-  geom_boxplot() +
-  labs(title = "Loan Sanction Amount by Age Group",
-       x = "Age Group",
-       y = "Loan Sanction Amount (USD)") +
-  theme_minimal()
-
-anova_test <- aov(Loan.Sanction.Amount..USD. ~ AgeGroup, data = loan_data_f4)
-summary(anova_test)
+#18-30: Includes all values ≥18 and <30.
+#30-40: Includes all values ≥30 and <40.
+#40-50: Includes all values ≥40 and <50.
+#50-60: Includes all values ≥50 and <60.
+#60-70: Includes all values ≥60 and <70.
+#70+: Includes all values ≥70.
 
 
-tree <- rpart(Loan.Sanction.Amount..USD. ~ Age, 
-              data = loan_data_f4, 
-              method = "anova", 
-              control = rpart.control(cp = 0.0001, minsplit = 20))
-print(tree)
+ggplot(data = loan_data_f4, aes(x = AgeGroup, y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Independent Variable",
+       y = "Dependent Variable")
+
+ggplot(data = loan_data_f4, aes(x = Age, y = Loan.Sanction.Amount..USD.)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Scatter Plot with Linear Fit",
+       x = "Independent Variable",
+       y = "Dependent Variable")
+
+#Determining the base group by number of observations
+age_group_counts <- loan_data_f4 %>%
+  group_by(AgeGroup) %>%
+  summarise(Count = n())
+print(age_group_counts)
+
+#18-30 is the most numerous with 4784
+
+loan_data_f5 <- loan_data_f4 %>%
+  mutate(
+         Age_30_40 = ifelse(AgeGroup == "30-40", 1, 0),
+         Age_40_50 = ifelse(AgeGroup == "40-50", 1, 0),
+         Age_50_60 = ifelse(AgeGroup == "50-60", 1, 0),
+         Age_60_70 = ifelse(AgeGroup == "60-70", 1, 0)
+         )
+
+View(loan_data_f5)
+
+model <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. , data = loan_data_f5)
+summary(model)
 
 
-correlation <- cor(loan_data_f4$AgeGroup, loan_data_f4$Loan.Sanction.Amount..USD., use = "complete.obs")
-cat("Correlation Coefficient:", correlation, "\n")
+#Gender -----------
+
+#Determining the base group by number of observations
+gender_count <- loan_data_f5 %>%
+  group_by(Gender) %>%
+  summarise(Count = n())
+print(gender_count)
+
+#Pretty much the same number of observations
+#Defining M as base
+
+loan_data_f6 <- loan_data_f5 %>%
+  mutate(female = ifelse(Gender == "F", 1, 0))
+
+View(loan_data_f6)
+
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female , data = loan_data_f6)
+model2 <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female, data = loan_data_f6)
+model3 <- lm(Loan.Sanction.Amount..USD. ~ Age^2 + Income..USD. + Loan.Amount.Request..USD. + female , data = loan_data_f6)
+
+
+
+#Location -----------
+
+#Determining the base group by number of observations
+locations_count <- loan_data_f6 %>%
+  group_by(Location) %>%
+  summarise(Count = n())
+print(locations_count)
+
+# Rural       2432
+# Semi-Urban 10307 **
+# Urban       1243
+
+
+loan_data_f7 <- loan_data_f6 %>%
+  mutate(
+    Location_Rural = ifelse(Location == "Rural", 1, 0),
+    Location_Urban = ifelse(Location == "Urban", 1, 0)
+  )
+
+View(loan_data_f7)
+
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban , data = loan_data_f7)
+model2 <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban , data = loan_data_f7)
+model3 <- lm(Loan.Sanction.Amount..USD. ~ Age^2 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban  , data = loan_data_f7)
+
+summary(model1)
+anova(model1,model2,model3)
+
+#Income Stability -----------
+
+#Determining the base group by number of observations
+count <- loan_data_f7 %>%
+  group_by(Income.Stability) %>%
+  summarise(Count = n())
+print(count)
+
+# High              1538
+# Low              12444**
+
+loan_data_f8 <- loan_data_f7 %>%
+  mutate(
+    stable_income = ifelse(Income.Stability == "High", 1, 0)
+  )
+
+View(loan_data_f8)
+
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income , data = loan_data_f8)
+model2 <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income, data = loan_data_f8)
+model3 <- lm(Loan.Sanction.Amount..USD. ~ Age^2 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income  , data = loan_data_f8)
+
+anova(model1,model2,model3)
+
+summary(model1)
+
+# Has.Active.Credit.Card -----------
+
+count <- loan_data_f8 %>%
+  group_by(Has.Active.Credit.Card) %>%
+  summarise(Count = n())
+print(count)
+
+
+# Active                  4513 **
+# Inactive                4448
+# Unknown                  647
+# Unpossessed             4374
+
+loan_data_f9 <- loan_data_f8 %>%
+  mutate(
+    CC_inactive = ifelse(Has.Active.Credit.Card == "Inactive", 1, 0),
+    CC_unknown = ifelse(Has.Active.Credit.Card == "Unknown", 1, 0),
+    CC_unpossessed = ifelse(Has.Active.Credit.Card == "Unpossessed", 1, 0)
+  )
+
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + CC_inactive + CC_unknown + CC_unpossessed, data = loan_data_f9)
+model2 <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income + CC_inactive + CC_unknown + CC_unpossessed, data = loan_data_f9)
+model3 <- lm(Loan.Sanction.Amount..USD. ~ Age^2 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income  + CC_inactive + CC_unknown + CC_unpossessed , data = loan_data_f9)
+
+model <- lm(Loan.Sanction.Amount..USD. ~  CC_inactive + CC_unknown + CC_unpossessed , data = loan_data_f9)
+anova(model1,model2,model3)
+summary(model)
+
+# Co.Applicant -----------
+
+count <- loan_data_f9 %>%
+  group_by(Co.Applicant) %>%
+  summarise(Count = n())
+print(count)
+
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant, data = loan_data_f9)
+model2 <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant, data = loan_data_f9)
+model3 <- lm(Loan.Sanction.Amount..USD. ~ Age^2 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income  + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant, data = loan_data_f9)
+
+anova(model1,model2,model3)
+
+model <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant, data = loan_data_f9)
+summary(model)
+
+vif(model)
+
+# Dependents -----------
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + CC_inactive + CC_unknown + CC_unpossessed + Dependents, data = loan_data_f9)
+model <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant + Dependents, data = loan_data_f9)
+summary(model1)
+
+
+# Co.Applicant -----------
+
+count <- loan_data_f9 %>%
+  group_by(Co.Applicant) %>%
+  summarise(Count = n())
+print(count)
+
+
+model1 <- lm(Loan.Sanction.Amount..USD. ~ Age_30_40 + Age_40_50 + Age_50_60 + Age_60_70 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant + Dependents + Co.Applicant, data = loan_data_f9)
+model2 <- lm(Loan.Sanction.Amount..USD. ~ Age + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant + Dependents + Co.Applicant, data = loan_data_f9)
+model3 <- lm(Loan.Sanction.Amount..USD. ~ Age^2 + Income..USD. + Loan.Amount.Request..USD. + female + Location_Rural + Location_Urban + stable_income  + CC_inactive + CC_unknown + CC_unpossessed + Co.Applicant + Dependents + Co.Applicant, data = loan_data_f9)
+
+summary(model2)
 
 
 

@@ -1,3 +1,8 @@
-[1] "Loan.Sanction.Amount..USD."  "Age"                        
-[3] "Income..USD."                "Loan.Amount.Request..USD."  
-[5] "Current.Loan.Expenses..USD." "Credit.Score"    
+[1] "Loan.Sanction.Amount..USD."**  "Age" **                       
+[3] "Income..USD."**                "Loan.Amount.Request..USD."  **
+[5] "Current.Loan.Expenses..USD."** "Credit.Score"**    
+
+
+Column: Dependents **
+$unique_values
+ [1]  3  1  2 NA  4  5  8  6  7 10
