@@ -56,7 +56,6 @@ Performing a correlation analysis between the bins (categorical variables) and t
 ##Gender
 ...
 
-
 #All variables have been somewhat edited or fitted into the model
 #Key graphs and analysis has been prepared
 

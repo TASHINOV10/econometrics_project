@@ -51,19 +51,19 @@
 
                             NA_Percentage
 
-Loan.Sanction.Amount..USD.      0.0000000
-Gender                          0.1748500
-Age                             0.0000000
-Income..USD.                   17.9433864
-Income.Stability                6.6773782
-Location                        0.0000000
-Loan.Amount.Request..USD.       0.0000000
-Current.Loan.Expenses..USD.     0.6757715
-Dependents                      9.6592789
-Credit.Score                    6.5592363
-No..of.Defaults                 0.0000000
-Has.Active.Credit.Card          5.2171447
-Co.Applicant                    0.0000000
+Loan.Sanction.Amount..USD.      0.0000000 * # 
+Gender                          0.1748500 * 
+Age                             0.0000000 **
+Income..USD.                   17.9433864 * #
+Income.Stability                6.6773782 * 
+Location                        0.0000000 * 
+Loan.Amount.Request..USD.       0.0000000 * #
+Current.Loan.Expenses..USD.     0.6757715 * #
+Dependents                      9.6592789 **#
+Credit.Score                    6.5592363 * #
+No..of.Defaults                 0.0000000 *
+Has.Active.Credit.Card          5.2171447 *
+Co.Applicant                    0.0000000 **
 
 -------------------------------------------------------------
 
